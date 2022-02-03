@@ -10,8 +10,14 @@ public class WarderingAI : MonoBehaviour
     public float speed = 3.0f;
     public float obstacleRange = 5.0f;
 
+    private float baseSpeed = 3.0f;
     private float radiusSphere = 0.75f;
     private bool isAlive = true;
+
+    private void Start()
+    {
+        GlobalEventManager.OnSpeedChanged.AddListener(OnSpeedChange);
+    }
 
     void Update()
     {
@@ -48,5 +54,16 @@ public class WarderingAI : MonoBehaviour
     public void SetActive(bool _isAlive)
     {
         isAlive = _isAlive;
+    }
+
+    public float GetBaseSpeed()
+    {
+        return baseSpeed;
+    }
+
+    private void OnSpeedChange(float value)
+    {
+        speed = value * baseSpeed;
+        PlayerPrefs.SetFloat("Enemy Speed", speed);
     }
 }

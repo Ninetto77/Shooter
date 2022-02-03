@@ -13,6 +13,7 @@ public class ReactiveTarget : MonoBehaviour
             behavior.SetActive(false);
         }
         StartCoroutine(Die());
+        GlobalEventManager.SendEnemyKilled();
     }
 
     private IEnumerator Die()

@@ -6,12 +6,14 @@ using UnityEngine;
 public class FPSInput : MonoBehaviour
 {
    public float speed = 9f;
+   private float baseSpeed = 9f;
    private float gravity= -9.8f;
-    private CharacterController _characterController;
+   private CharacterController _characterController;
 
     private void Start()
     {
         _characterController = GetComponent<CharacterController>();
+        GlobalEventManager.OnSpeedChanged.AddListener(OnSpeedChange);
     }
 
     void Update()
@@ -27,5 +29,10 @@ public class FPSInput : MonoBehaviour
         movement = transform.TransformDirection(movement);
         _characterController.Move(movement);
 
+    }
+
+    public void OnSpeedChange(float value)
+    {
+        speed = value * baseSpeed;
     }
 }
