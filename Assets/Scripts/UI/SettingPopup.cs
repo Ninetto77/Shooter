@@ -7,9 +7,6 @@ public class SettingPopup : MonoBehaviour
 {
     [SerializeField] private Slider slider;
 
-    [SerializeField] private FPSInput fPSInput;
-    [SerializeField] private WarderingAI warderingAI;
-
     private const float baseSpeed = 6.0f;
 
     private void Start()
