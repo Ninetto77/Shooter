@@ -20,11 +20,13 @@ public class RelativeMovement : MonoBehaviour
     private CharacterController _characterController;
     private bool hitGround = false;
     private ControllerColliderHit _contact;
+    private Animator _animator;
 
     void Start()
     {
         vertSpeed = MinFall;
         _characterController = GetComponent<CharacterController>();
+        _animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -50,6 +52,8 @@ public class RelativeMovement : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, direction, rotSpeed*Time.deltaTime);
         }
 
+        _animator.SetFloat("Speed", movement.sqrMagnitude);
+
         hitGround = false;
         RaycastHit hit;
         if (vertSpeed < 0 && Physics.Raycast(transform.position, Vector3.down, out hit))
@@ -67,6 +71,7 @@ public class RelativeMovement : MonoBehaviour
             else
             {
                 vertSpeed = MinFall;
+                _animator.SetBool("Jumping", false);
             }
         }
         else
@@ -76,6 +81,12 @@ public class RelativeMovement : MonoBehaviour
             {
                 vertSpeed = TerminalVelocity;
             }
+
+            if (_contact != null)       //_contact появиляется только при первом касании игрока об землю
+            {
+                _animator.SetBool("Jumping", true);
+            }
+
             if (_characterController.isGrounded)
             {
                 if (Vector3.Dot(movement, _contact.normal) < 0)     //скалярное произведение. -1 противоположеное направление, 1 - коллериальные
